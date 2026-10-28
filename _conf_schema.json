@@ -1,0 +1,25 @@
+﻿{
+  "owner_umo": {
+    "description": "主人的会话地址",
+    "type": "string",
+    "default": "平台:消息类型:会话号",
+    "hint": "形如 平台:消息类型:会话号，不要改错"
+  },
+  "watch_ids": {
+    "description": "要转达的号（私聊）",
+    "type": "list",
+    "default": [],
+    "hint": "只转这些号发来的私聊"
+  },
+  "forward_live": {
+    "description": "是否同时抄一份到主人会话",
+    "type": "bool",
+    "default": true,
+    "hint": "关掉的话只在主人下次说话前才补进去"
+  },
+  "max_chars": {
+    "description": "单条最多转多少字",
+    "type": "int",
+    "default": 800
+  }
+}

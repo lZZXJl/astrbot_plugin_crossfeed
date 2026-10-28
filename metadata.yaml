@@ -1,0 +1,9 @@
+name: astrbot_plugin_crossfeed
+display_name: 私聊转达
+desc: 把指定人发来的私聊转一份给主人，让主人那边的会话也能看见。
+version: 0.1.0
+author: 鲸
+repo: https://github.com/lZZXJl/astrbot_plugin_crossfeed
+homepage: https://github.com/lZZXJl/astrbot_plugin_crossfeed
+social_link: https://github.com/lZZXJl
+short_desc: 指定人的私聊，转一份给主人
