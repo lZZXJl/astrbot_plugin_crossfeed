@@ -5,8 +5,8 @@ AstrBot 的私聊天然是一人一格，主人那一格里看不见别人的话
 
 1. 监听指定的号发来的私聊，存进一个待投递的缓冲里；
    顺手把一份原文转发到主人的会话，让主人当场就能看见。
-2. 主人那一格下一次请求模型之前，把还没送达的话补进系统提示，
-   于是这边的“我”也就知道了。
+2. 主人那一格下一次请求模型之前，把还没送达的话作为临时用户内容补进去，
+   于是这边的“我”也就知道了。不动 system prompt，前缀缓存照样命中。
 
 缓冲是文件，不是内存 —— 手机上的进程随时会被系统收走。
 """
@@ -21,6 +21,7 @@ from astrbot.api.event import AstrMessageEvent, MessageChain, filter
 from astrbot.api.message_components import Plain
 from astrbot.api.provider import ProviderRequest
 from astrbot.api.star import Context, Star, StarTools, register
+from astrbot.core.agent.message import TextPart
 
 
 @register(
@@ -155,7 +156,10 @@ class CrossFeed(Star):
                         "但你已经看过了，可以自然地接着聊。不必逐条复述。】\n"
                         + "\n".join(lines)
                     )
-                    req.system_prompt = (req.system_prompt or "") + "\n\n" + block
+                    # 走临时内容，不碰 system prompt，免得毁掉前缀缓存
+                    req.extra_user_content_parts.append(
+                        TextPart(text=block).mark_as_temp()
+                    )
                     self._save([x for x in self._load() if x not in items])
                     logger.info(f"[crossfeed] 投递 {len(lines)} 条到主人会话")
                 return
@@ -169,6 +173,8 @@ class CrossFeed(Star):
                     "他叫夏季，是这边的正主。你不必主动提起他，也别编造他做过的事；"
                     "他在这边说过什么，你并不知道。"
                 )
-                req.system_prompt = (req.system_prompt or "") + "\n\n" + note
+                req.extra_user_content_parts.append(
+                    TextPart(text=note).mark_as_temp()
+                )
         except Exception as e:
             logger.warning(f"[crossfeed] 投递失败：{e}")

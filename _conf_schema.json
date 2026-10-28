@@ -21,5 +21,11 @@
     "description": "单条最多转多少字",
     "type": "int",
     "default": 800
+  },
+  "notify_delay": {
+    "description": "启动后等几秒再往主人会话报一声“起来了”",
+    "type": "int",
+    "default": 25,
+    "hint": "机器慢的时候给长一点，免得插件还没挂好就发消息"
   }
 }
