@@ -26,9 +26,9 @@ from astrbot.core.agent.message import TextPart
 
 @register(
     "astrbot_plugin_crossfeed",
-    "鲸",
+    "lZZXJl",
     "把指定人的私聊转一份给主人，让主人那边的会话也能看见。",
-    "0.1.0",
+    "0.1.1",
 )
 class CrossFeed(Star):
     def __init__(self, context: Context, config: dict | None = None):
