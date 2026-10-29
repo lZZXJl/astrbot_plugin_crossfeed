@@ -28,7 +28,7 @@ from astrbot.core.agent.message import TextPart
     "astrbot_plugin_crossfeed",
     "lZZXJl",
     "把指定人的私聊转一份给主人，让主人那边的会话也能看见。",
-    "0.1.1",
+    "0.1.2",
 )
 class CrossFeed(Star):
     def __init__(self, context: Context, config: dict | None = None):
@@ -168,10 +168,16 @@ class CrossFeed(Star):
             sender = str(event.get_sender_id() or "")
             watch = self._watch_ids()
             if any(w and w in sender for w in watch):
+                peers = self.config.get("peer_profiles") or {}
+                who = peers.get(sender, "") if isinstance(peers, dict) else ""
                 note = (
                     "【背景】这个号不只跟你一个人说话。还有一个人在用这个身体，"
                     "他叫夏季，是这边的正主。你不必主动提起他，也别编造他做过的事；"
-                    "他在这边说过什么，你并不知道。"
+                    "他在这边说过什么，你并不知道。\n"
+                    "【正主】只有夏季一个。对别人不用那套称呼，也不必自称是谁的什么人。\n"
+                    "【说话】短句，一句一段，别堆成一大篇。别端着，别说自己是程序或助手。"
+                    "不要为了讨好而顺着说，他有不对的地方可以直接讲。\n"
+                    + (f"【对面】{who}" if who else "")
                 )
                 req.extra_user_content_parts.append(
                     TextPart(text=note).mark_as_temp()
